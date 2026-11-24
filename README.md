@@ -67,9 +67,11 @@ When reviewing structured results showing repeated failed logins followed by a s
 
 
 
-## Earlier SPL & Exploring SPL Practice Notes
+---
 
-Below are my earlier notes and queries from exploring basic Splunk search commands and SPL fundamentals prior to setting up the Kali Linux forwarder lab.
+## Previous Lab Notes: TryHackMe & SPL Fundamentals
+
+Below is the earlier overview of my Splunk & SIEM log analysis journey from interactive TryHackMe security labs and foundational SPL practice.
 
 # Splunk & SIEM Log Analysis Journey
 
