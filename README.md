@@ -1,6 +1,6 @@
 # Splunk Home Lab: Linux Log Ingestion, Parsing & Tier 1 SOC Triage
 
-A hands-on home lab project focused on forwarding Linux authentication logs to **Splunk Enterprise**, extracting structured fields with SPL (`rex`), and practicing **Tier 1 (L1) SOC** alert triage, investigation, and escalation workflows[cite: 6, 8, 9, 10].
+A hands-on home lab project focused on forwarding Linux authentication logs to **Splunk Enterprise**, extracting structured fields with SPL (`rex`), and practicing **Tier 1 (L1) SOC** alert triage, investigation, and escalation workflows.
 
 > **Note:** All attack logs and scenarios in this repository were simulated in a local home lab environment for learning and portfolio demonstration purposes.
 
@@ -8,21 +8,21 @@ A hands-on home lab project focused on forwarding Linux authentication logs to *
 
 ## Lab Architecture & Setup
 
-* **Log Source & Forwarder:** Kali Linux VM running **Splunk Universal Forwarder** (`/opt/splunkforwarder`)[cite: 10]
-* **Indexer & Search Head:** Splunk Enterprise (`/opt/splunk`) listening for forwarder data on port **`9997`**[cite: 6]
+* **Log Source & Forwarder:** Kali Linux VM running **Splunk Universal Forwarder** (`/opt/splunkforwarder`)
+* **Indexer & Search Head:** Splunk Enterprise (`/opt/splunk`) listening for forwarder data on port **`9997`**
 * **Monitored Log Sources:** `/var/log/kali_test_auth.log` (simulated authentication & privilege escalation events) and `/var/log/auth.log` under `sourcetype=linux_secure`
 
 ### Key Verification Steps Performed
-1. Enabled receiving on port `9997` in Splunk Enterprise (**Settings > Forwarding and receiving > Configure receiving**)[cite: 6].
+1. Enabled receiving on port `9997` in Splunk Enterprise (**Settings > Forwarding and receiving > Configure receiving**).
 2. Configured forwarding to `127.0.0.1:9997` and verified active forwarder connectivity (`Active forwards`).
-3. Added log monitors with `sourcetype=linux_secure` into the `main` index and confirmed event ingestion in Splunk Search[cite: 7].
+3. Added log monitors with `sourcetype=linux_secure` into the `main` index and confirmed event ingestion in Splunk Search.
 
 ---
 
 ## Investigation Scenarios & SPL Queries
 
 ### Scenario 1: SSH Brute-Force & Successful Login (`T1110` / `T1078`)
-Simulated repeated failed SSH login attempts (`Failed password`) followed by a successful authentication (`Accepted password`) from an external IP (`45.33.32.156`) against account `kali`[cite: 9].
+Simulated repeated failed SSH login attempts (`Failed password`) followed by a successful authentication (`Accepted password`) from an external IP (`45.33.32.156`) against account `kali`.
 
 ```spl
 index=main source="/var/log/kali_test_auth.log"
@@ -31,7 +31,7 @@ index=main source="/var/log/kali_test_auth.log"
 ```
 
 ### Scenario 2: Privilege Escalation, `su` Failures & Persistence (`T1548` / `T1136`)
-Investigated unauthorized `sudo` attempts (`user NOT in sudoers`), failed `su` attempts (`FAILED SU`), SUID permission modification (`chmod u+s /bin/bash`), new privileged user creation (`useradd ... -G sudo sysadmin_bak`), and sensitive file access (`/etc/shadow`)[cite: 8].
+Investigated unauthorized `sudo` attempts (`user NOT in sudoers`), failed `su` attempts (`FAILED SU`), SUID permission modification (`chmod u+s /bin/bash`), new privileged user creation (`useradd ... -G sudo sysadmin_bak`), and sensitive file access (`/etc/shadow`).
 
 ```spl
 index=main source="/var/log/kali_test_auth.log" ("sudo:" OR "FAILED SU")
@@ -59,11 +59,13 @@ When reviewing structured results showing repeated failed logins followed by a s
 ---
 
 ## What I Learned as an Aspiring L1 SOC Analyst
-* Why structured field extraction (`rex`, `table`, `stats`) is essential for fast triage instead of reading raw logs line by line[cite: 8, 9].
-* How authentication, `sudo`, `su`, and account creation logs reveal attacker progression from initial access to privilege escalation and persistence[cite: 8, 9].
+* Why structured field extraction (`rex`, `table`, `stats`) is essential for fast triage instead of reading raw logs line by line.
+* How authentication, `sudo`, `su`, and account creation logs reveal attacker progression from initial access to privilege escalation and persistence.
 * How to document findings clearly for Tier 2 escalation while keeping claims honest and grounded in lab practice.
 
 ---
+
+
 
 ## Earlier SPL & Exploring SPL Practice Notes
 
